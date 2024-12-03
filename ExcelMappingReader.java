@@ -10,6 +10,7 @@ import java.util.List;
 public class ExcelMappingReader {
 
     public static class XmlMapping {
+        private String group;
         private String apiFieldName;
         private String apiDataType;
         private String xmlElementName;
@@ -17,7 +18,8 @@ public class ExcelMappingReader {
         private String xmlPath;
 
         // Constructor
-        public XmlMapping(String apiFieldName, String apiDataType, String xmlElementName, String xmlDataType, String xmlPath) {
+        public XmlMapping(String group, String apiFieldName, String apiDataType, String xmlElementName, String xmlDataType, String xmlPath) {
+            this.group = group;
             this.apiFieldName = apiFieldName;
             this.apiDataType = apiDataType;
             this.xmlElementName = xmlElementName;
@@ -26,6 +28,10 @@ public class ExcelMappingReader {
         }
 
         // Getters
+        public String getGroup() {
+            return group;
+        }
+
         public String getApiFieldName() {
             return apiFieldName;
         }
@@ -65,15 +71,16 @@ public class ExcelMappingReader {
             Row row = sheet.getRow(i);
             if (row == null) continue; // Skip empty rows
 
-            String apiFieldName = getCellValueAsString(row.getCell(0));
-            String apiDataType = getCellValueAsString(row.getCell(1));
-            String xmlElementName = getCellValueAsString(row.getCell(2));
-            String xmlDataType = getCellValueAsString(row.getCell(3));
-            String xmlPath = getCellValueAsString(row.getCell(4));
+            String group = getCellValueAsString(row.getCell(0));
+            String apiFieldName = getCellValueAsString(row.getCell(1));
+            String apiDataType = getCellValueAsString(row.getCell(2));
+            String xmlElementName = getCellValueAsString(row.getCell(3));
+            String xmlDataType = getCellValueAsString(row.getCell(4));
+            String xmlPath = getCellValueAsString(row.getCell(5));
 
             if (apiFieldName.isEmpty()) continue; // Skip if API Field Name is empty
 
-            mappings.add(new XmlMapping(apiFieldName, apiDataType, xmlElementName, xmlDataType, xmlPath));
+            mappings.add(new XmlMapping(group, apiFieldName, apiDataType, xmlElementName, xmlDataType, xmlPath));
         }
 
         workbook.close();
